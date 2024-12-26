@@ -1,0 +1,593 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "net.franceweb.intesis",
+  "version": "3.0.1",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "brandColor": "#043D5D",
+  "platforms": [
+    "local"
+  ],
+  "name": {
+    "en": "Intesis",
+    "fr": "Intesis"
+  },
+  "description": {
+    "en": "Take control of your air-conditioner with Intesis",
+    "fr": "Prenez le contrôle de votre climatisation avec Intesis"
+  },
+  "category": [
+    "climate"
+  ],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png"
+  },
+  "author": {
+    "name": "Serge PALUMBO"
+  },
+  "homeyCommunityTopicId": 84373,
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "SoPhosFR"
+      }
+    }
+  },
+  "support": "mailto:sophos@franceweb.net",
+  "flow": {
+    "actions": [
+      {
+        "id": "intesis-wmp-set-fanspeed",
+        "title": {
+          "en": "Set fan speed",
+          "fr": "Définir la vitesse de ventilation"
+        },
+        "titleFormatted": {
+          "en": "Set fan speed at [[speed]]",
+          "fr": "Définir la vitesse de ventilation sur [[speed]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=intesis-home_automation"
+          },
+          {
+            "type": "dropdown",
+            "name": "speed",
+            "placeholder": {
+              "en": "speed",
+              "fr": "vitesse"
+            },
+            "values": [
+              {
+                "id": "3",
+                "label": {
+                  "en": "High",
+                  "fr": "Haute"
+                }
+              },
+              {
+                "id": "2",
+                "label": {
+                  "en": "Medium",
+                  "fr": "Moyenne"
+                }
+              },
+              {
+                "id": "1",
+                "label": {
+                  "en": "Low",
+                  "fr": "Basse"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "intesis-wmp-set-mode",
+        "title": {
+          "en": "Set function mode",
+          "fr": "Définir le mode de fonctionnement"
+        },
+        "titleFormatted": {
+          "en": "Set function mode at [[mode]]",
+          "fr": "Définir le mode de fonctionnement sur [[mode]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=intesis-home_automation"
+          },
+          {
+            "type": "dropdown",
+            "name": "mode",
+            "placeholder": {
+              "en": "mode",
+              "fr": "mode"
+            },
+            "values": [
+              {
+                "id": "heat",
+                "label": {
+                  "en": "Heat",
+                  "fr": "Chaud"
+                }
+              },
+              {
+                "id": "cool",
+                "label": {
+                  "en": "Cool",
+                  "fr": "Froid"
+                }
+              },
+              {
+                "id": "auto",
+                "label": {
+                  "en": "Auto",
+                  "fr": "Auto"
+                }
+              },
+              {
+                "id": "fan",
+                "label": {
+                  "en": "Fan",
+                  "fr": "Ventilation"
+                }
+              },
+              {
+                "id": "dry",
+                "label": {
+                  "en": "Dry",
+                  "fr": "Déshumidification"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Home Automation (xx-xx-WMP-1)",
+        "fr": "Home Automation (xx-xx-WMP-1)"
+      },
+      "class": "thermostat",
+      "capabilities": [
+        "onoff",
+        "intesis_mode",
+        "target_temperature",
+        "measure_temperature",
+        "intesis_fanspeed",
+        "intesis_vaneud",
+        "intesis_vanelr",
+        "sensor_power",
+        "sensor_mode",
+        "sensor_fan",
+        "sensor_ambtemp",
+        "sensor_settemp"
+      ],
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [
+        "lan"
+      ],
+      "images": {
+        "small": "/drivers/intesis-home_automation/assets/images/small.png",
+        "large": "/drivers/intesis-home_automation/assets/images/large.png",
+        "xlarge": "/drivers/intesis-home_automation/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "intesis_pair"
+        }
+      ],
+      "id": "intesis-home_automation",
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Intesis settings",
+            "fr": "Paramètres Intesis",
+            "es": "Parámetros de Intesis"
+          },
+          "children": [
+            {
+              "id": "ip_address",
+              "type": "text",
+              "label": {
+                "en": "IP address",
+                "fr": "Adesse IP",
+                "es": "Dirección IP"
+              },
+              "value": "Ex:192.168.0.xxx",
+              "hint": {
+                "en": "IP address (LAN) of the Intesis",
+                "fr": "Adesse IP (LAN) de l'Intesis",
+                "es": "Dirección IP (LAN) del Intesis"
+              }
+            },
+            {
+              "id": "ip_port",
+              "type": "text",
+              "label": {
+                "en": "IP Port",
+                "fr": "Port IP",
+                "es": "Puerto IP"
+              },
+              "value": "3310",
+              "hint": {
+                "en": "IP Port of the Intesis (default 3310)",
+                "fr": "Port IP de l'Intesis (3310 par défaut)",
+                "es": "Puerto IP del Intesis (3310 por defecto)"
+              }
+            },
+            {
+              "id": "unit_number",
+              "type": "text",
+              "label": {
+                "en": "Unit number",
+                "fr": "Numéro d'unité",
+                "es": "Unidad numérica"
+              },
+              "value": "1",
+              "hint": {
+                "en": "Unit number to control on Intesis device (default 1)",
+                "fr": "Numéro d'unité à controler sur le périphérique Intesis (1 par défaut)",
+                "es": "Número de unidad a controlar en el dispositivo Intesis (1 por defecto)"
+              }
+            },
+            {
+              "id": "polling_rate",
+              "type": "number",
+              "label": {
+                "en": "Polling rate (s)",
+                "fr": "Fréquence de rafraîchissement (s)",
+                "es": "Frecuencia de actualización (s)"
+              },
+              "value": 30,
+              "min": 30,
+              "max": 86400,
+              "hint": {
+                "en": "Polling rate in seconds (default 30).",
+                "fr": "Fréquence de rafraîchissement en secondes (30 par défaut).",
+                "es": "Frecuencia de actualización en segundos (30 por defecto)."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "capabilities": {
+    "intesis_fanspeed": {
+      "id": "intesis_fanspeed",
+      "type": "enum",
+      "title": {
+        "en": "Fan speed",
+        "fr": "Ventilation",
+        "es": "Ventilación"
+      },
+      "uiComponent": "picker",
+      "values": [
+        {
+          "id": "4",
+          "title": {
+            "en": "Speed 4",
+            "fr": "Vitesse 4",
+            "es": "Velocidad 4"
+          }
+        },
+        {
+          "id": "3",
+          "title": {
+            "en": "Speed 3",
+            "fr": "Vitesse 3",
+            "es": "Velocidad 3"
+          }
+        },
+        {
+          "id": "2",
+          "title": {
+            "en": "Speed 2",
+            "fr": "Vitesse 2",
+            "es": "Velocidad 2"
+          }
+        },
+        {
+          "id": "1",
+          "title": {
+            "en": "Speed 1",
+            "fr": "Vitesse 1",
+            "es": "Velocidad 1"
+          }
+        },
+        {
+          "id": "auto",
+          "title": {
+            "en": "Auto",
+            "fr": "Auto",
+            "es": "Auto"
+          }
+        }
+      ],
+      "getable": true,
+      "setable": true,
+      "units": {
+        "en": "",
+        "fr": ""
+      },
+      "insights": true
+    },
+    "intesis_mode": {
+      "id": "intesis_mode",
+      "type": "enum",
+      "title": {
+        "en": "Mode",
+        "fr": "Mode",
+        "es": "Modo"
+      },
+      "uiComponent": "picker",
+      "values": [
+        {
+          "id": "heat",
+          "title": {
+            "en": "Heat",
+            "fr": "Chaud",
+            "es": "Caleinte"
+          }
+        },
+        {
+          "id": "cool",
+          "title": {
+            "en": "Cool",
+            "fr": "Froid",
+            "es": "Frío"
+          }
+        },
+        {
+          "id": "auto",
+          "title": {
+            "en": "Auto",
+            "fr": "Auto",
+            "es": "Auto"
+          }
+        },
+        {
+          "id": "fan",
+          "title": {
+            "en": "Fan",
+            "fr": "Ventilation",
+            "es": "Ventilación"
+          }
+        },
+        {
+          "id": "dry",
+          "title": {
+            "en": "Dry",
+            "fr": "Déshumidification",
+            "es": "Deshumidificación"
+          }
+        }
+      ],
+      "getable": true,
+      "setable": true,
+      "units": {
+        "en": "",
+        "fr": "",
+        "es": ""
+      }
+    },
+    "intesis_vanelr": {
+      "id": "intesis_vanelr",
+      "type": "enum",
+      "title": {
+        "en": "Horizontal wind direction",
+        "fr": "Orientation horizontale",
+        "es": "Orientación horizontal"
+      },
+      "uiComponent": "picker",
+      "values": [
+        {
+          "id": "3",
+          "title": {
+            "en": "Left",
+            "fr": "Gauche",
+            "es": "Izquierda"
+          }
+        },
+        {
+          "id": "2",
+          "title": {
+            "en": "Middle",
+            "fr": "Milieu",
+            "es": "Medio"
+          }
+        },
+        {
+          "id": "1",
+          "title": {
+            "en": "Right",
+            "fr": "Droite",
+            "es": "Derecha"
+          }
+        },
+        {
+          "id": "AUTO",
+          "title": {
+            "en": "Auto",
+            "fr": "Auto",
+            "es": "Auto"
+          }
+        }
+      ],
+      "getable": true,
+      "setable": true,
+      "units": {
+        "en": "",
+        "fr": "",
+        "es": ""
+      },
+      "insights": true
+    },
+    "intesis_vaneud": {
+      "id": "intesis_vaneud",
+      "type": "enum",
+      "title": {
+        "en": "Vertical wind direction",
+        "fr": "Orientation verticale",
+        "es": "Orientación vertical"
+      },
+      "uiComponent": "picker",
+      "values": [
+        {
+          "id": "3",
+          "title": {
+            "en": "High",
+            "fr": "Haut",
+            "es": "Alto"
+          }
+        },
+        {
+          "id": "2",
+          "title": {
+            "en": "Middle",
+            "fr": "Milieu",
+            "es": "Medio"
+          }
+        },
+        {
+          "id": "1",
+          "title": {
+            "en": "Low",
+            "fr": "Bas",
+            "es": "Abajo"
+          }
+        },
+        {
+          "id": "AUTO",
+          "title": {
+            "en": "Auto",
+            "fr": "Auto",
+            "es": "Auto"
+          }
+        }
+      ],
+      "getable": true,
+      "setable": true,
+      "units": {
+        "en": "",
+        "fr": "",
+        "es": ""
+      },
+      "insights": true
+    },
+    "sensor_ambtemp": {
+      "id": "sensor_ambtemp",
+      "type": "number",
+      "title": {
+        "en": "Temperature",
+        "fr": "Température",
+        "es": "Temperatura"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": "°C",
+      "decimals": 1,
+      "icon": "/assets/icon_ambtemp.svg"
+    },
+    "sensor_fan": {
+      "id": "sensor_fan",
+      "type": "string",
+      "title": {
+        "en": "Fan speed",
+        "fr": "Ventilation",
+        "es": "Ventilación"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "icon": "/assets/icon_fan.svg"
+    },
+    "sensor_mode": {
+      "id": "sensor_mode",
+      "type": "string",
+      "title": {
+        "en": "Mode",
+        "fr": "Mode",
+        "es": "Modo"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "icon": "/assets/icon_mode.svg"
+    },
+    "sensor_power": {
+      "id": "sensor_power",
+      "type": "boolean",
+      "title": {
+        "en": "Turned on",
+        "fr": "Activé",
+        "es": "Activado"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "icon": "/assets/icon_power.svg"
+    },
+    "sensor_settemp": {
+      "id": "sensor_settemp",
+      "type": "number",
+      "title": {
+        "en": "Target temperature",
+        "fr": "Température cible",
+        "es": "Temperatura configurada"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "units": "°C",
+      "decimals": 1,
+      "icon": "/assets/icon_settemp.svg"
+    },
+    "sensor_vanelr": {
+      "id": "sensor_vanelr",
+      "type": "string",
+      "title": {
+        "en": "Horizontal direction",
+        "fr": "Orientation horizontale",
+        "es": "Orientación horizontal"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "icon": "/assets/icon_fan.svg"
+    },
+    "sensor_vaneud": {
+      "id": "sensor_vaneud",
+      "type": "string",
+      "title": {
+        "en": "Vertical direction",
+        "fr": "Orientation verticale",
+        "es": "Orientación vertical"
+      },
+      "uiComponent": "sensor",
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "icon": "/assets/icon_fan.svg"
+    }
+  }
+}

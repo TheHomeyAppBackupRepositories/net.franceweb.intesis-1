@@ -1,0 +1,64 @@
+{
+    "device": {
+        "settings_empty": "Vous devez définir les paramètres dans les réglages",
+        "local_device_unreachable":"L'adresse IP du périphérique est injoignable",
+        "power": 
+        {
+            "on": "Allumé",
+            "off": "Eteint"
+        },
+        "fan": 
+        {
+            "1":"Vitesse 1",
+            "2":"Vitesse 2",
+            "3":"Vitesse 3",
+            "4":"Vitesse 4",
+            "auto":"Auto"
+        },
+        "vaneud": 
+        {
+            "1": "Bas",
+            "2": "Milieu",
+            "3": "Haut",
+            "auto":"Auto"
+        },
+        "vanelr": 
+        {
+            "1": "Gauche",
+            "2": "Milieu",
+            "3": "Droite",
+            "auto":"Auto"
+        },
+        "mode":
+        {
+            "heat": "Chaud",
+            "cool": "Froid",
+            "auto": "Auto",
+            "fan": "Ventilation",
+            "dry": "Déshumidification"
+        }
+    },
+    "driver": {
+        "driver_initialized": "Intesis Driver a été initialisé",
+        "name_for_new_device":"Climatisation"
+    },
+    "settings":
+    {
+        "bad_polling_rate": "La fréquence de rafraîchissement doit être comprise entre 30 et 86400 s",
+        "bad_polling_rate_devicetricky": "Votre périphérique n'accepte pas la commande 'GET ALL', la fréquence de rafraichissement ne doit pas être inférieure à 60 secondes"
+    },
+    "pair":
+    {
+        "title": "Intesis",
+        "bloc_title": "Veuillez renseigner les paramètres",
+        "device_name": "Nom du nouveau périphérique",
+        "ip_address": "Adresse IP Locale",
+        "ip_port": "Port IP",
+        "unit_number": "Numéro d'unité (1 par défaut)",
+        "user": "Utilisateur",
+        "password": "Mot de passe",
+        "polling_rate": "Fréquence de rafraîchissement (30-86400 s)",
+        "continue": "Continuer",
+        "device_already_exists": "Un périphérique existe déjà avec cette adresse : '__device_name__'"
+    }
+}

@@ -1,0 +1,129 @@
+[
+  {
+    "type": "group",
+    "label": { 
+      "en": "Intesis settings", 
+      "fr": "Paramètres Intesis",
+      "es": "Parámetros de Intesis"
+    },
+    "children": [
+      {
+        "id": "ip_address",
+        "type": "text",
+        "label": { 
+          "en": "IP address",
+          "fr": "Adesse IP",
+          "es": "Dirección IP"
+        },
+        "value": "Ex:192.168.0.xxx",
+        "hint": { 
+          "en": "IP address (LAN) of the Intesis",
+          "fr": "Adesse IP (LAN) de l'Intesis",
+          "es": "Dirección IP (LAN) del Intesis"
+        }
+      },
+      {
+        "id": "ip_port",
+        "type": "text",
+        "label": { 
+          "en": "IP Port",
+          "fr": "Port IP",
+          "es": "Puerto IP"
+        },
+        "value": "3310",
+        "hint": { 
+          "en": "IP Port of the Intesis (default 3310)",
+          "fr": "Port IP de l'Intesis (3310 par défaut)",
+          "es": "Puerto IP del Intesis (3310 por defecto)"
+        }
+      },
+      {
+        "id": "polling_rate",
+        "type": "number",
+        "label": { 
+          "en": "Polling rate (s)",
+          "fr": "Fréquence de rafraîchissement (s)",
+          "es": "Frecuencia de actualización (s)"
+        },
+        "value": 30,
+        "min": 30,
+        "max": 86400,
+        "hint": { 
+          "en": "Polling rate in seconds (default 30). This value must not be under 60 s if the device does not accept 'GET ALL' command (see below).",
+          "fr": "Fréquence de rafraîchissement en secondes (30 par défaut). Cette valeur ne doit pas être inférieure à 60 s si le périphérique n'accepte pas la commande 'GET ALL' (voir ci-dessous).",
+          "es": "Frecuencia de actualización en segundos (30 por defecto). Este valor no debe ser inferior a 60 s si el dispositivo no acepta el comando 'GET ALL' (ver más abajo)."
+        }
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": { 
+      "en": "Technical informations", 
+      "fr": "Informations techniques",
+      "es": "Información técnica"
+    },
+    "children": [
+      {
+        "id": "device_capabilities",
+        "type": "label",
+        "label": { 
+          "en": "Device capabilities",
+          "fr": "Capacités du périphérique",
+          "es": "Capacidades del dispositivo"
+        },
+        "value": "",
+        "hint": { 
+          "en": "Device capabilities (read only)",
+          "fr": "Capacités du périphérique (lecture seule)",
+          "es": "Capacidades del dispositivo (sólo lectura)"
+        }
+      },
+      {
+        "id": "device_state",
+        "type": "label",
+        "label": { 
+          "en": "Device state",
+          "fr": "Etat du périphérique",
+          "es": "Estato del dispositivo"
+        },
+        "value": "",
+        "hint": { 
+          "en": "Device state (read only)",
+          "fr": "Etat du périphérique (lecture seule)",
+          "es": "Estato del dispositivo (sólo lectura)"
+        }
+      },
+      {
+        "id": "device_log",
+        "type": "label",
+        "label": { 
+          "en": "Device log",
+          "fr": "Journal du périphérique",
+          "es": "Registro del dispositivo"
+        },
+        "value": "",
+        "hint": { 
+          "en": "Device log (read only)",
+          "fr": "Journal du périphérique (lecture seule)",
+          "es": "Registro del dispositivo (sólo lectura)"
+        }
+      },
+      {
+        "id": "device_tricky",
+        "type": "label",
+        "label": { 
+          "en": "'GET ALL' not allowed",
+          "fr": "'GET ALL' non accepté",
+          "es": "'GET ALL' no permitido"
+        },
+        "value": "false",
+        "hint": { 
+          "en": "Device doesn't allow 'GET ALL' (read only)",
+          "fr": "Le périphérique n'autorise pas 'GET ALL' (lecture seule)",
+          "es": "El dispositivo no permite 'GET ALL' (sólo lectura)"
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "type": "group",
+    "label": { 
+      "en": "Intesis settings", 
+      "fr": "Paramètres Intesis",
+      "es": "Parámetros de Intesis"
+    },
+    "children": [
+      {
+        "id": "ip_address",
+        "type": "text",
+        "label": { 
+          "en": "IP address",
+          "fr": "Adesse IP",
+          "es": "Dirección IP"
+        },
+        "value": "Ex:192.168.0.xxx",
+        "hint": { 
+          "en": "IP address (LAN) of the Intesis",
+          "fr": "Adesse IP (LAN) de l'Intesis",
+          "es": "Dirección IP (LAN) del Intesis"
+        }
+      },
+      {
+        "id": "user",
+        "type": "text",
+        "label": { 
+          "en": "User",
+          "fr": "Utilisateur",
+          "es": "Usario"
+        },
+        "value": "",
+        "hint": { 
+          "en": "Local User to connect to the unit (default 'Operator')",
+          "fr": "Utilisateur local pour se connecter à l'unité ('Operator' par défaut)",
+          "es": "Usuario local para conectarse a la unidad ('Operator' por defecto)"
+        }
+      },
+      {
+        "id": "password",
+        "type": "pasword",
+        "label": { 
+          "en": "Password",
+          "fr": "Mot de passe",
+          "es": "Contraseña"
+        },
+        "value": "",
+        "hint": { 
+          "en": "Password for the local user (default 'operator')",
+          "fr": "Mot de passe de l'utilisateur local ('operator' par défaut)",
+          "es": "Contraseña para el usuario local ('operator' por defecto)"
+        }
+      },
+      {
+        "id": "polling_rate",
+        "type": "number",
+        "label": { 
+          "en": "Polling rate (s)",
+          "fr": "Fréquence de rafraîchissement (s)",
+          "es": "Frecuencia de actualización (s)"
+        },
+        "value": 30,
+        "min": 30,
+        "max": 86400,
+        "hint": { 
+          "en": "Polling rate in seconds (default 30).",
+          "fr": "Fréquence de rafraîchissement en secondes (30 par défaut).",
+          "es": "Frecuencia de actualización en segundos (30 por defecto)."
+        }
+      }
+    ]
+  }
+]

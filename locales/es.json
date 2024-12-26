@@ -1,0 +1,64 @@
+{
+    "device": {
+        "settings_empty": "Debe configurar los parámetros en la configuración del dispositivo",
+        "local_device_unreachable":"IP del dispositivo es inalcanzable",
+        "power": 
+        {
+            "on": "Encendido",
+            "off": "Aapagado"
+        },
+        "fan": 
+        {
+            "1": "Velocidad  1",
+            "2": "Velocidad  2",
+            "3": "Velocidad  3",
+            "4": "Velocidad  4",
+            "auto": "Auto"
+        },
+        "vaneud": 
+        {
+            "1": "Abajo",
+            "2": "Medio",
+            "3": "Alto",
+            "auto":"Auto"
+        },
+        "vanelr": 
+        {
+            "1": "Izquierda",
+            "2": "Medio",
+            "3": "Derecha",
+            "auto":"Auto"
+        },
+        "mode":
+        {
+            "heat": "Calor",
+            "cool": "Frio",
+            "auto": "Auto",
+            "fan": "Ventilador",
+            "dry": "Deshumidificación"
+        }
+    },
+    "driver": {
+        "driver_initialized": "Intesis Driver fue inicializado",
+        "name_for_new_device":"Aire acondicionado"
+    },
+    "settings":
+    {
+        "bad_polling_rate": "La frecuencia de actualización debe estar entre 30 y 86400 s",
+        "bad_polling_rate_devicetricky": "El dispositivo no acepta el comando 'GET ALL', la frecuencia de actualización no debe ser inferior a 60 segundos"
+    },
+    "pair":
+    {
+        "title": "Intesis",
+        "bloc_title": "Por favor complete los parámetros",
+        "device_name": "Nuevo nombre de dispositivo",
+        "ip_address": "Dirección IP local",
+        "ip_port": "Puerto IP",
+        "unit_number": "Unidad numérica (1 por defecto)",
+        "user": "Usario",
+        "password": "Contraseña",
+        "polling_rate": "Frecuencia de actualización (30-86400 s)",
+        "continue": "Continuar",
+        "device_already_exists": "Ya existe un dispositivo con esta dirección IP : '__device_name__'"
+    }
+}

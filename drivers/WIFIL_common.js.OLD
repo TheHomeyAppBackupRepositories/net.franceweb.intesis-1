@@ -1,0 +1,341 @@
+'use strict';
+const MyCommonFunctions = require("./common");
+const DebugMode = MyCommonFunctions.DebugMode;
+const Sleep = MyCommonFunctions.Sleep;
+const Now = MyCommonFunctions.Now;
+const WriteSettings = MyCommonFunctions.WriteSettings;
+
+const fetch = require('node-fetch');
+const https = require('https');
+const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+const OpenConDelay = 5000; //5 seconds
+
+const Homey = require('homey');
+const net = require ('node:net');
+var $ReturnData;
+var DeviceState = "";
+
+async function WIFILDeviceGET() {
+  var settings = this.getSettings();
+  const intesis_ip = settings.ip_address
+  const intesis_port = settings.ip_port
+  const unit_number = settings.unit_number
+
+
+  if (settings.address == "Ex:192.168.0.xxx") {
+    this.setUnavailable(this.homey.__("device.settings_empty"));
+  } else {
+    //const MyTokenReturn = await GetToken.call(this,mode);
+    if (DebugMode) {console.log('MyTokenReturn:',MyTokenReturn)};
+    //const MyToken  = MyTokenReturn[1]; 
+    //const MySprinkler = MyTokenReturn[2];
+    //var $result = "Zone "+RealWateringZone+" : ";
+    if (true) { //(MyTokenReturn[0] == 0) {
+      //Token found
+      this.setAvailable().catch(this.error);
+      if (DebugMode) {console.log("Token found : ", MyToken)};
+
+      //var $HttpInit = { method: "GET", headers: { "Content-Type":"application/json" } };
+      //var $HttpsInit = { method: "GET", agent: httpsAgent, headers: { "Content-Type":"application/json" } };
+      var $HttpInit = { method: "GET", headers: { "Content-Type":"text/plain" } };
+      var $HttpsInit = { method: "GET", agent: httpsAgent, headers: { "Content-Type":"text/plain" } };
+      var $Cmds = "https://" + intesis_ip
+      $Cmds += ",https://"+ intesis_ip +"/cgi.api"
+      $Cmds += ",https://"+ intesis_ip +"/js/data/data.json"
+      $Cmds += ",http://"+ intesis_ip
+      $Cmds += ",http://"+ intesis_ip +"/cgi.api"
+      $Cmds += ",http://"+ intesis_ip +"/js/data/data.json"
+      $Cmds.split(',').forEach( ($MyUrl) => {
+   
+          //GetState() {
+          //Polling OnOff de la zone sur le RainMachine
+          /*let $response = await fetch($MyUrl, 
+            {
+              agent: httpsAgent,
+              method: "GET",
+              headers: { "Content-Type":"application/json" },
+            }
+          ).catch(error => 
+            {
+              WriteSettings.call(this,"device_log", 'KO');
+              WriteSettings.call(this,"device_log", 'Error: ' + error.message);
+            });
+          const data = await $response.json();
+          WriteSettings.call(this,"device_log", 'Ok');
+          WriteSettings.call(this,"device_log", data.toString());
+            //let $active = data.active; //True = zone active / False = zone inactive
+          //let $state = data.state; //0 = not running/1 = running/2 = queued
+          //if (DebugMode) {console.log("active :",$active)};
+          //if (DebugMode) {console.log("state :",$state)};
+          return [$active,$state];*/
+        let $MyUrlInit = $HttpInit;
+        if ($MyUrl.startsWith("https")) $MyUrlInit = $HttpsInit;
+        fetch($MyUrl, $MyUrlInit)
+          .then(function ($response) 
+          {
+            //console.log('***********************************************\n');
+            //console.log("device_log", '>> ' + $MyUrl);
+            //WriteSettings.call(this,"device_log", '>> ' + $MyUrl);
+            //const data = $response.json();
+            console.log("[GET]" + $MyUrl + "[RETURN]" + $response.statusText);
+            WriteSettings.call(this,"device_log", "***" + $MyUrl + "[RETURN]" + $response.statusText);
+            //let $active = data.active; //True = zone active / False = zone inactive
+            //let $state = data.state; //0 = not running/1 = running/2 = queued
+            //if (DebugMode) {console.log("active :",$active)};
+            //if (DebugMode) {console.log("state :",$state)};
+            //return [$active,$state];
+            return $response;
+          }.bind(this))
+          .then(function ($GetStateReturn) 
+          {
+            //const $ZoneActive=$GetStateReturn[0];
+            //const $ZoneState=$GetStateReturn[1];
+            if (DebugMode) {console.log("ZoneActive :",$ZoneActive)};
+            if (DebugMode) {console.log("ZoneState :",$ZoneState)};
+            if (DebugMode) {console.log("Result :",$result)};
+          }.bind(this))
+          .catch(function (error)
+            {
+              console.log("[GET]" + $MyUrl + "[ERROR]" + error.toString());
+              WriteSettings.call(this,"device_log", "***" + $MyUrl + "[ERROR]" + error.toString());
+            }.bind(this));
+        //}
+        /*(async () => {
+          const $GetStateReturn = await GetState();
+          //const $ZoneActive=$GetStateReturn[0];
+          //const $ZoneState=$GetStateReturn[1];
+          if (DebugMode) {console.log("ZoneActive :",$ZoneActive)};
+          if (DebugMode) {console.log("ZoneState :",$ZoneState)};
+
+          if (DebugMode) {console.log("Result :",$result)};
+        })();*/
+      });
+    } else {
+      //Error
+      this.setUnavailable(MyToken).catch(this.error);
+      if (DebugMode) {console.log(MyToken)};
+      $result += "disabled - off";
+    }
+  }
+
+}
+
+function WIFILDeviceConnect($Command) {
+
+  var settings = this.getSettings();
+  if (settings.ip_address == "Ex:192.168.0.xxx") {
+    this.setUnavailable(this.homey.__("device.settings_empty"));
+  } else {
+    const intesis_ip = settings.ip_address
+    const intesis_port = settings.ip_port
+    const unit_number = settings.unit_number
+     
+    try 
+    {
+      //WriteSettings.call(this,"device_log", Now.call(this)+'#OPENCON');
+      const client = net.createConnection({ host: intesis_ip, port: intesis_port }, () => {
+        if (DebugMode) {console.log('Connected to server '+intesis_ip+':'+intesis_port)};
+        if (DebugMode) {console.log('Sending Unit #' + unit_number + ' Commands '+$Command)};
+        this.setAvailable().catch(this.error);
+        //Close connexion after 5 seconds
+        setTimeout(() => { client.end() }, OpenConDelay)
+        //client.write($Command+'\r\n');
+        //WriteSettings.call(this,"device_log", Now.call(this)+'#>'+$Command);
+        $Command.split('/').forEach( ($Cmd) => {
+          //WriteSettings.call(this,"device_log", Now.call(this)+'#>'+$Cmd);
+          if (DebugMode) {console.log("Send Cmd : ",Now.call(this)+'#>'+$Cmd)};
+          client.write($Cmd+'\r\n');
+        });
+      });
+      
+      client.on('error', (error) => {
+        //WriteSettings.call(this,"device_log", Now.call(this)+'#'+error.code);
+        if (DebugMode) {console.log('Error : ',error)};
+        if (error.coce = 'ECONNREFUSED') 
+        {
+          console.log("Error:",error.code);
+          console.log("$Command:",$Command);
+          //this.setUnavailable(this.homey.__("device.local_device_unreachable"));
+        } else {
+          this.setUnavailable(error.code);
+        }
+      });
+
+      client.on('data', (data) => {
+        //WriteSettings.call(this,"device_log", Now.call(this)+'#'+data);
+        $ReturnData = data;
+        //console.log("UseValue : ",$ReturnData.toString());
+        UseWIFILValues.call(this);
+      });
+
+      client.on('end', () => {
+        if (DebugMode) {console.log('Disconnectd from server '+intesis_ip+':'+intesis_port)};
+        //WriteSettings.call(this,"device_log", Now.call(this)+'#CLOSECON');
+      }); 
+    } 
+    catch(error) 
+    {
+      //WriteSettings.call(this,"device_log", Now.call(this)+'#'+error.code);
+      //$Message += '*** ERROR\n' + error + '\n[END]';
+      //WriteSettings.call(this,"device_state", $Message);
+      //Homey.alert(error)
+      client.end();
+    }
+  };
+};
+
+function UseWIFILValues() {
+  if (DebugMode) {console.log('ReturnedData : ',$ReturnData.toString())};
+  if ($ReturnData.toString().includes("LIMITS")) {
+    //We have asked for LIMITS of the unit to upgrade or downgrades capabilities
+    //Write them on device settings zone "device_capabilities"
+    //WriteSettings.call(this,"device_capabilities", $ReturnData.toString().trimEnd());
+
+    if (DebugMode) {console.log("LIMITS return :\n",$ReturnData.toString())};
+    if (! $ReturnData.toString().includes("LIMITS:VANEUD")) {
+      //No VANEUD Capability for this unit, remove device capabilities
+      if (DebugMode) {console.log("Remove Capability for VANEUD")};
+      this.removeCapability("intesis_vaneud")
+      this.removeCapability("sensor_vaneud")
+    }
+    if (! $ReturnData.toString().includes("LIMITS:VANELR")) {
+      //No VANELR Capability for this unit, remove device capability
+      if (DebugMode) {console.log("Remove Capability for VANELR")};
+      this.removeCapability("intesis_vanelr")
+      this.removeCapability("sensor_vanelr")
+    }
+    $ReturnData.toString().split(/\r?\n/).forEach((LineContent,index) => {
+      //LineContent = LIMITS:FANSP,[AUTO,1,2,3,4]
+      if (DebugMode) {console.log('LineContent : ',LineContent)};
+      let LineValues = LineContent.split(',[');
+      //LineValues = LIMITS:FANSP / AUTO,1,2,3,4]
+      if (LineValues.length < 2) { return; };
+      const ParamName = LineValues[0].split(':')[1].toLowerCase();
+      //ParamName = fansp
+      const ParamValue = LineValues[1].replace("]", "").toLowerCase();
+      //ParamValue = auto,1,2,3,4
+      if (DebugMode) {console.log(ParamName+' : ',ParamValue)};
+      //console.log(ParamName+' : ',ParamValue);
+      switch (ParamName) {
+        case "fansp":
+          //not working: can't adapt capabilities dynamically on code ???
+          break;
+        }
+    });
+    return;
+  } else {
+    //Write brute values on device settings zone "device_state"
+    //var DeviceState = "";
+    if ( ($ReturnData.toString().trim() != "ACK") && (this.getSetting('device_tricky') != 'true') && ($ReturnData.toString().split(/\r?\n/).length <= 1) ) {
+      //Device is tricky, it returns only one value at command GET,1:*
+      //WriteSettings.call(this,"device_tricky", "true");
+      console.log("Device FOUND tricky !");
+    }
+    $ReturnData.toString().split(/\r?\n/).forEach((LineContent,index) => {
+      //LineContent = CHN,1:FANSP,2
+      if (DebugMode) {console.log('LineContent : ',LineContent)};
+      let LineValues = LineContent.split(',');
+      //LineValues = CHN / 1:FANSP / 2
+      if (LineValues.length < 3) { return; };
+      const UnitNumber = LineValues[1].split(':')[0];
+      //UnitNumber = 1
+      if (DebugMode) {console.log('UnitNumber : ',UnitNumber)};
+      if (UnitNumber == (this.getSetting('unit_number') ?? 1)) {
+        const ParamName = LineValues[1].split(':')[1].toLowerCase();
+        //ParamName = fansp
+        const ParamValue = LineValues[2].toLowerCase();
+        //ParamValue = 2
+        if (DebugMode) {console.log(ParamName+':',ParamValue)};
+        switch (ParamName) {
+          case "onoff":
+            this.setCapabilityValue("onoff", (ParamValue == "on")).catch(err => {console.log('Value error')});
+            this.setCapabilityValue("sensor_power", (ParamValue == "on"));
+            DeviceState += ParamName.toUpperCase() + ":" + ParamValue.toUpperCase() + "\r\n";
+            break;
+          case "mode":
+            //CHN,1:MODE,COOL (heat, cool, off, auto)
+              this.setCapabilityValue("intesis_mode", ParamValue);//.catch(err => {console.log('Value error')})
+              this.setCapabilityValue("sensor_mode", this.homey.__("device.mode."+ParamValue));
+              DeviceState += ParamName.toUpperCase() + ":" + ParamValue.toUpperCase() + "\r\n";
+              break;
+          case "fansp":
+            //  CHN,1:FANSP,2
+            this.setCapabilityValue("intesis_fanspeed", ParamValue);//.catch(err => {console.log('Value error')});
+            this.setCapabilityValue("sensor_fan", this.homey.__("device.fan."+ParamValue));
+            DeviceState += ParamName.toUpperCase() + ":" + ParamValue.toUpperCase() + "\r\n";
+          case "vaneud":
+            //  CHN,1:VANEUD,2
+            if (this.hasCapability("intesis_vaneud")) {
+              this.setCapabilityValue("intesis_vaneud", ParamValue).catch(err => {console.log('Value error')})
+              DeviceState += ParamName.toUpperCase() + ":" + ParamValue.toUpperCase() + "\r\n";
+            };
+            if (this.hasCapability("sensor_vaneud")) {this.setCapabilityValue("sensor_vaneud", this.homey.__("device.vaneud."+ParamValue))};
+            break;
+          case "vanelr":
+            //  CHN,1:VANELR,2
+            if (this.hasCapability("intesis_vanelr")) {
+              this.setCapabilityValue("intesis_vanelr", ParamValue).catch(err => {console.log('Value error')})
+              DeviceState += ParamName.toUpperCase() + ":" + ParamValue.toUpperCase() + "\r\n";
+            };
+            if (this.hasCapability("sensor_vanelr")) {this.setCapabilityValue("sensor_vanelr", this.homey.__("device.vanelr."+ParamValue))};
+            break;
+          case "ambtemp":
+            //CHN,1:AMBTEMP,261
+            this.setCapabilityValue("measure_temperature", Number(ParamValue)/10);//.catch(err => {console.log('Value error')});
+            this.setCapabilityValue("sensor_ambtemp", Number(ParamValue)/10);
+            DeviceState += ParamName.toUpperCase() + ":" + (Number(ParamValue)/10).toString().toUpperCase() + "\r\n";
+            break;
+          case "setptemp":
+            //CHN,1:SETPTEMP,260
+            //Some units go to setptemp at 32768 when in Fan mode, so don't consider setptemp if <0 or >100
+            if ((Number(ParamValue)/10 >= 0) && (Number(ParamValue)/10 <= 100)) {
+              this.setCapabilityValue("target_temperature", Number(ParamValue)/10);//.catch(err => {console.log('Value error')});
+              this.setCapabilityValue("sensor_settemp", Number(ParamValue)/10);
+              DeviceState += ParamName.toUpperCase() + ":" + (Number(ParamValue)/10).toString().toUpperCase() + "\r\n";
+            }
+            break;
+          default:
+            //UNKNOWN
+            DeviceState += "[TRASH]" + ParamName.toUpperCase() + ":" + ParamValue.toUpperCase() + "\r\n";
+            //DeviceState += ParamName.toUpperCase() + " : " + "\r\n";
+            break;
+        };
+      };
+    });
+    //console.log("DeviceState Fn:",DeviceState);
+    //WriteSettings.call(this,"device_state", DeviceState.trim());
+  }
+};
+
+function GetWIFILDeviceState() {
+  //console.log("--- DEBUT");
+  DeviceState = "";
+  //console.log("this.getSetting('device_tricky') : ", this.getSetting('device_tricky'));
+  if (this.getSetting('device_tricky') == 'true') { 
+    //Device is tricky, it returns only one value at command GET,1:*
+    //console.log("GetWIFILDeviceState : Device is tricky");
+    //If polling rate is less than 1 minute, we adjust it to 1 minute
+    if (this.getSetting('polling_rate') < 60) this.setSettings({"polling_rate": 60})
+    //We now send each command individualy
+    const unit_number = this.getSetting('unit_number') ?? 1;
+    const $Capabilities = "ONOFF,MODE,FANSP,AMBTMP,SETPTEMP";//,VANEUD,VANELR"; //,ERRSTATUS,ERRCODE";
+    var $Cmd = "";
+    $Capabilities.split(',').forEach(($Capability) => {
+      //console.log("State : "+$Capability);
+      Sleep(500); //Pause 0.5 seconds
+      //WIFILDeviceConnect.call(this,'GET,1:'+$Capability); 
+      WIFILDeviceConnect.call(this,'GET,' + unit_number + ':'+$Capability); 
+      $Cmd += 'GET,1:' + $Capability + '/';
+    });
+  } else {
+    WIFILDeviceGET.call(this);
+  }
+  //console.log("--- FIN");
+  //WriteSettings.call(this,"device_state", DeviceState.trim());
+}
+
+function GetWIFILDeviceCapabilities() {
+  //WIFILDeviceConnect.call(this,'LIMITS:*');
+}
+
+module.exports = { WIFILDeviceConnect, GetWIFILDeviceState, GetWIFILDeviceCapabilities };

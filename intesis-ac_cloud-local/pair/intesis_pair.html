@@ -1,0 +1,83 @@
+  <head>
+  </head>
+  
+  <body>
+    <header class="homey-header">
+      <div class="Homey" align="center">
+        <img src="../assets/images/logo_intesis.png"></img>
+      </div>
+    </header>    
+
+    <form class="homey-form">
+      <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend" data-i18n="pair.bloc_title"></legend>
+        <div class="homey-form-group">
+          <label class="homey-form-label" for="device_name" data-i18n="pair.device_name"></label>
+          <input class="homey-form-input" id="device_name" type="text" value="New Intesis Device"/>
+        </div>
+        <div class="homey-form-group">
+          <label class="homey-form-label" for="ip_address" data-i18n="pair.ip_address"></label>
+          <input class="homey-form-input" id="ip_address" type="text" value="Ex:192.168.0.xxx"/>
+        </div>
+        <div class="homey-form-group">
+          <label class="homey-form-label" for="user" data-i18n="pair.user"></label>
+          <input class="homey-form-input" id="user" type="text" value=""/>
+        </div>
+        <div class="homey-form-group">
+          <label class="homey-form-label" for="password" data-i18n="pair.password"></label>
+          <input class="homey-form-input" id="password" type="password" value=""/>
+        </div>
+        <div class="homey-form-group">
+          <label class="homey-form-label" for="polling_rate" data-i18n="pair.polling_rate"></label>
+          <input class="homey-form-input" id="polling_rate" type="number" min="30" max="86400" value="30"/>
+        </div>
+        <button id="continue" class="homey-button-primary-full" data-i18n="pair.continue" onclick="CreateDevice()"></button>
+      </fieldset>
+    </form>
+
+    <script type="text/javascript">
+      document.getElementById("device_name").value = Homey.__("driver.name_for_new_device");
+
+      function CreateDevice() {
+        const device_name = document.getElementById("device_name").value;
+        const ip_address = document.getElementById("ip_address").value;
+        const polling_rate = document.getElementById("polling_rate").value;
+        const user = document.getElementById("user").value;
+        const password = document.getElementById("password").value;
+
+        if (Number(polling_rate) < 30 || Number(polling_rate) > 86400) 
+        {
+          polling_rate = 30;
+          document.getElementById("polling_rate").value = polling_rate;
+          return;
+        }
+        
+        //Create the device with these settings
+        //In case of already exisiting device with same IP, an alert is displayed
+        try {
+          Homey.createDevice({
+            name: device_name, 
+            data: {
+              id: "intesis-wifil-"+ip_address,
+            },
+            settings: {
+              ip_address: ip_address,
+              polling_rate: polling_rate,
+              user: user,
+              password: password
+            },
+          })
+        }
+        catch {
+          console.log("Error creating Device: ",error)
+          Homey.alert(err(error));
+          return;
+        }
+        console.log("Device created: ","intesis-wifil-"+ip_address)
+        Homey.done();
+
+      }
+
+    </script>
+
+  </body>

@@ -1,0 +1,64 @@
+{
+    "device": {
+        "settings_empty": "You must first set parameters in device settings",
+        "local_device_unreachable":"Device IP is unreachable",
+        "power": 
+        {
+            "on": "On",
+            "off": "Off"
+        },
+        "fan": 
+        {
+            "1": "Speed 1",
+            "2": "Speed 2",
+            "3": "Speed 3",
+            "4": "Speed 4",
+            "auto": "Auto"
+        },
+        "vaneud": 
+        {
+            "1": "Down",
+            "2": "Middle",
+            "3": "Up",
+            "auto":"Auto"
+        },
+        "vanelr": 
+        {
+            "1": "Left",
+            "2": "Middle",
+            "3": "Right",
+            "auto":"Auto"
+        },
+        "mode":
+        {
+            "heat": "Heat",
+            "cool": "Cool",
+            "auto": "Auto",
+            "fan": "Fan",
+            "dry": "Dry"
+        }
+    },
+    "driver": {
+        "driver_initialized": "Intesis Driver has been initialized",
+        "name_for_new_device":"Climate control"
+    },
+    "settings":
+    {
+        "bad_polling_rate": "Polling rate must be between 30 and 86400 s",
+        "bad_polling_rate_devicetricky": "Your device does not accept 'GET ALL' commmand, the polling rate must not bee under 60 seconds"
+    },
+    "pair":
+    {
+        "title": "Intesis",
+        "bloc_title": "Please input settings",
+        "device_name": "New device name",
+        "ip_address": "Local IP Address",
+        "ip_port": "IP Port",
+        "unit_number": "Unit number (Default : 1)",
+        "user": "User",
+        "password": "Password",
+        "polling_rate": "Polling rate (30-86400 s)",
+        "continue": "Continue",
+        "device_already_exists": "A device already exists with this address : '__device_name__'"
+    }
+}
